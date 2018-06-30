@@ -1,0 +1,13 @@
+[
+  {
+    "user": {
+      "id": "12345",
+      "state": "QUERY",
+      "airport": "BKK",
+      "query": {
+        "origin": "BKK",
+        "destination": "HND"
+      }
+    }
+  }
+]

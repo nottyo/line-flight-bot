@@ -1,20 +1,19 @@
-import os, sys
-from flask import Flask, request, abort
-from departures import Departures
-from arrivals import Arrivals
-import logging
-from logging.handlers import RotatingFileHandler
+import os
+import sys
+
+from flask import Flask, request
 from linebot import (
     LineBotApi, WebhookHandler
 )
-
 from linebot.exceptions import (
-    InvalidSignatureError, LineBotApiError
+    LineBotApiError
 )
-
 from linebot.models import (
     MessageEvent, TextMessage, BubbleContainer, FlexSendMessage, TextSendMessage, CarouselContainer
 )
+
+from arrivals import Arrivals
+from departures import Departures
 
 app = Flask(__name__)
 
@@ -64,7 +63,6 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
     text = event.message.text
-    reply_token = event.reply_token
     result = None
     if 'departure' in text.lower():
         result = departures.create_departures_data()
@@ -85,7 +83,4 @@ def handle_text_message(event):
 
 
 if __name__ == '__main__':
-    log_handler = RotatingFileHandler('app.log', maxBytes=10000000, backupCount=1)
-    log_handler.setLevel(logging.INFO)
-    app.logger.addHandler(log_handler)
-    app.run(host='0.0.0.0', port=6000)
+    app.run(debug=True, use_reloader=True)
