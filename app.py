@@ -1,5 +1,6 @@
 import os
 import sys
+import re
 
 from flask import Flask, request
 from linebot import (
@@ -14,6 +15,7 @@ from linebot.models import (
 
 from arrivals import Arrivals
 from departures import Departures
+from flight_by_route import FlightByRoute
 
 app = Flask(__name__)
 
@@ -31,7 +33,7 @@ if channel_access_token is None:
 
 departures = Departures()
 arrivals = Arrivals()
-
+flight_by_route = FlightByRoute()
 
 
 @app.route("/")
@@ -64,10 +66,17 @@ def callback():
 def handle_text_message(event):
     text = event.message.text
     result = None
+    print("text: {}".format(text))
+    flight_route_pattern = re.compile('^([A-Z]{3})-([A-Z]{3})$')
     if 'departure' in text.lower():
         result = departures.create_departures_data()
     if 'arrival' in text.lower():
         result = arrivals.create_arrivals_data()
+    if flight_route_pattern.match(text.upper()) is not None:
+        result = flight_route_pattern.match(text.upper())
+        origin = result.group(1)
+        destination = result.group(2)
+        result = flight_by_route.get_flight_by_route(origin, destination)
 
     if result is not None:
         if isinstance(result, BubbleContainer) or isinstance(result, CarouselContainer):
