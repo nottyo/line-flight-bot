@@ -32,15 +32,18 @@ class FlightByRoute:
         flight = response.json()['result']['response']['flight']
         origin_city = flight['data'][0]['airport']['origin']['position']['region']['city']
         destination_city = flight['data'][0]['airport']['destination']['position']['region']['city']
-        no_of_flights = flight['item']['current']
         carousel = {
             'type': 'carousel',
             'contents': []
         }
         sorted_flight_data = self.normalize_flight_data(flight['data'])
+        flights_cache = []
         flight_data = []
         for data in sorted_flight_data:
             flight_no = data['flight_no']
+            if flight_no in flights_cache:
+                continue
+            flights_cache.append(flight_no)
             airline = data['airline']
             time_start = time.strftime('%H:%M', time.localtime(data['departure_time']))
             time_end = time.strftime('%H:%M', time.localtime(data['arrival_time']))
@@ -64,7 +67,7 @@ class FlightByRoute:
                             "color": "#ffffff",
                             "size": "xxs",
                             "wrap": True,
-                            "flex": 5
+                            "flex": 4
                         },
                         {
                             "type": "text",
@@ -77,6 +80,7 @@ class FlightByRoute:
                     ]
                 }
             )
+        no_of_flights = len(flights_cache)
         sliced_list = self.slice_list_to_chunks(flight_data, 10)
         for slices in sliced_list:
             bb = {
@@ -153,7 +157,7 @@ class FlightByRoute:
                                     "color": "#ffffff",
                                     "weight": "bold",
                                     "size": "xxs",
-                                    "flex": 5
+                                    "flex": 4
                                 },
                                 {
                                     "type": "text",
@@ -178,5 +182,7 @@ class FlightByRoute:
             bubble_container = BubbleContainer.new_from_json_dict(bb)
             bubble_container.styles.__delattr__('type')
             carousel['contents'].append(bubble_container)
+        if no_of_flights <= 10:
+            return bubble_container
         return CarouselContainer.new_from_json_dict(carousel)
 

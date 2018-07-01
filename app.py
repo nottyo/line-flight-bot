@@ -1,6 +1,6 @@
 import os
-import sys
 import re
+import sys
 
 from flask import Flask, request
 from linebot import (

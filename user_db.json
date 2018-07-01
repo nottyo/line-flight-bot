@@ -2,7 +2,7 @@
   {
     "user": {
       "id": "12345",
-      "state": "QUERY",
+      "state": "ROUTE",
       "airport": "BKK",
       "query": {
         "origin": "BKK",

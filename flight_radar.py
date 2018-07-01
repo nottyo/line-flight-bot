@@ -40,7 +40,8 @@ class FlightRadar:
         payload = {
             'query': 'default',
             'origin': origin,
-            'destination': destination
+            'destination': destination,
+            'limit': '100'
         }
         print('Getting Flights by Route, Origin: {0}, Destination: {1}'.format(origin, destination))
         response = requests.get(url, params=payload, headers=request_base_headers)
