@@ -4,7 +4,7 @@
       "id": "12345",
       "state": "ROUTE",
       "airport": "BKK",
-      "query": {
+      "route": {
         "origin": "BKK",
         "destination": "HND"
       }

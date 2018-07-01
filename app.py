@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import json
 
 from flask import Flask, request
 from linebot import (
@@ -10,7 +11,7 @@ from linebot.exceptions import (
     LineBotApiError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, BubbleContainer, FlexSendMessage, TextSendMessage, CarouselContainer
+    MessageEvent, TextMessage, BubbleContainer, FlexSendMessage, TextSendMessage, CarouselContainer, SourceUser
 )
 
 from arrivals import Arrivals
@@ -25,6 +26,9 @@ channel_secret = os.getenv("CHANNEL_SECRET")
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
+with open('user_db.json') as f:
+    user_db = json.load(f)
+
 if channel_secret is None:
     print('Specify LINE_CHANNEL_SECRET as environment variable.')
     sys.exit(1)
@@ -36,6 +40,22 @@ departures = Departures()
 arrivals = Arrivals()
 flight_by_route = FlightByRoute()
 flight_info = FlightInfo()
+
+
+def get_user_by_name(user_id):
+    for user in user_db:
+        print("user: {}".format(user))
+        if user['user']['id'] == user_id:
+            return user
+    return None
+
+
+def save_db(user_data):
+    for user in user_db:
+        if user['user']['id'] == user_data['id']:
+            user['user'] = user_data
+    with open('user_db.json', 'w') as outfile:
+        json.dump(user_db, outfile)
 
 
 @app.route("/")
@@ -67,12 +87,36 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
     text = event.message.text
-    result = None
     print("text: {}".format(text))
+    if isinstance(event.source, SourceUser):
+        id = event.source.user_id
+    users = get_user_by_name(id)
+    print("users: {}".format(users))
+    if get_user_by_name(id) is None:
+        user_data = {
+            'user': {
+                'id': id,
+                'airport': 'BKK',
+                'route': {
+                    'origin': 'BKK',
+                    'destination': 'CNX'
+                }
+            }
+        }
+        user_db.append(user_data)
+    else:
+        user_data = get_user_by_name(id)
+    print("users_data: {}".format(user_data))
+    result = None
     flight_route_pattern = re.compile('^ROUTE ([A-Z]{3})-([A-Z]{3})$')
     flight_no_pattern = re.compile('^FLIGHT ([A-Z0-9]{3,})$')
+    airport_pattern = re.compile('^AIRPORT ([A-Z]{3})$')
+    if airport_pattern.match(text.upper()):
+        result = airport_pattern.match(text.upper())
+        airport_code = result.group(1)
+        result = departures.create_departures_data(airport_code)
     if 'departure' in text.lower():
-        result = departures.create_departures_data()
+        result = departures.create_departures_data('BKK')
     if 'arrival' in text.lower():
         result = arrivals.create_arrivals_data()
     if flight_route_pattern.match(text.upper()):

@@ -11,13 +11,13 @@ flight_api = FlightRadar()
 
 class Departures:
 
-    def create_departures_data(self):
+    def create_departures_data(self, airport_code):
         carousel = {
             'type': 'carousel',
             'contents': []
         }
         for count in range(1, 6):
-            response = flight_api.get_airport_departures('BKK', count)
+            response = flight_api.get_airport_departures(airport_code, count)
             resp_json = response.json()['result']['response']
             airport_name = resp_json['airport']['pluginData']['details']['name']
             airport_code = resp_json['airport']['pluginData']['details']['code']['iata']

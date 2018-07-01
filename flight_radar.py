@@ -7,6 +7,19 @@ request_base_headers = {'User-agent': 'nottyo/1.0'}
 
 class FlightRadar:
 
+    def get_airport(self, airport_code):
+        url = base_url + '/common/v1/airport.json'
+        payload = {
+            'code': airport_code,
+            'plugin[]': '',
+            'plugin-setting[schedule][mode]': '',
+            '[timestamp]': str(int(time.time())),
+            'limit': "5"
+        }
+        print('Getting Airport \"{0}\"'.format(airport_code))
+        response = requests.get(url, params=payload, headers=request_base_headers)
+        return response
+
     def get_airport_departures(self, airport_code, page):
         url = base_url + '/common/v1/airport.json'
         payload = {
