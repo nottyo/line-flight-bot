@@ -4,13 +4,15 @@ import time
 base_url = 'https://api.flightradar24.com'
 request_base_headers = {'User-agent': 'nottyo/1.0'}
 
+
 class FlightRadar:
 
     def get_airport_departures(self, airport_code, page):
         url = base_url + '/common/v1/airport.json'
         payload = {
             'code': airport_code,
-            '[mode]': 'departures',
+            'plugin[]': '',
+            'plugin-setting[schedule][mode]': 'departures',
             '[timestamp]': str(int(time.time())),
             'page': str(page),
             'limit': "10"
@@ -23,7 +25,8 @@ class FlightRadar:
         url = base_url + '/common/v1/airport.json'
         payload = {
             'code': airport_code,
-            '[mode]': 'arrivals',
+            'plugin[]': '',
+            'plugin-setting[schedule][mode]': 'arrivals',
             '[timestamp]': str(int(time.time())),
             'page': str(page),
             'limit': "10"

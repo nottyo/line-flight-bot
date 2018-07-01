@@ -109,16 +109,16 @@ class Arrivals:
                     ]
                 }
             }
-            schedules = resp_json['airport']['pluginData']['schedule']['departures']['data']
+            schedules = resp_json['airport']['pluginData']['schedule']['arrivals']['data']
             bubble_body_contents = bubble['body']['contents']
             for schedule in schedules:
                 flight_no = schedule['flight']['identification']['number']['default']
                 status_text = str(schedule['flight']['status']['generic']['status']['text']).capitalize()
                 status_color = schedule['flight']['status']['generic']['status']['color']
                 airline_name = schedule['flight']['airline']['short']
-                destination_city = str(schedule['flight']['airport']['destination']['position']['region']['city']).upper()
-                destination_iata = str(schedule['flight']['airport']['destination']['code']['iata'])
-                departure_time = time.strftime('%H:%M', time.localtime(schedule['flight']['time']['scheduled']['departure']))
+                origin_city = str(schedule['flight']['airport']['origin']['position']['region']['city']).upper()
+                origin_iata = str(schedule['flight']['airport']['origin']['code']['iata'])
+                arrival_time = time.strftime('%H:%M', time.localtime(schedule['flight']['time']['scheduled']['arrival']))
                 bubble_body_contents.append(
                     {
                         "type": "box",
@@ -127,14 +127,14 @@ class Arrivals:
                         "contents": [
                             {
                                 "type": "text",
-                                "text": departure_time,
+                                "text": arrival_time,
                                 "color": "#ffffff",
                                 "size": "xxs",
                                 "flex": 2
                             },
                             {
                                 "type": "text",
-                                "text": destination_city + ' ({0})'.format(destination_iata),
+                                "text": origin_city + ' ({0})'.format(origin_iata),
                                 "color": "#ffffff",
                                 "size": "xxs",
                                 "wrap": True,
