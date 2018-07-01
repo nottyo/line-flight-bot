@@ -45,3 +45,16 @@ class FlightRadar:
         print('Getting Flights by Route, Origin: {0}, Destination: {1}'.format(origin, destination))
         response = requests.get(url, params=payload, headers=request_base_headers)
         return response
+
+    def get_flight(self, flight):
+        url = base_url + '/common/v1/flight/list.json'
+        payload = {
+            'query': flight,
+            'fetchBy': 'flight',
+            'page': '1',
+            'limit': '100'
+        }
+        print('Getting Flight {0}'.format(flight))
+        response = requests.get(url, params=payload, headers=request_base_headers)
+        return response
+

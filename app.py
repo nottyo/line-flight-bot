@@ -16,6 +16,7 @@ from linebot.models import (
 from arrivals import Arrivals
 from departures import Departures
 from flight_by_route import FlightByRoute
+from flight_info import FlightInfo
 
 app = Flask(__name__)
 
@@ -34,6 +35,7 @@ if channel_access_token is None:
 departures = Departures()
 arrivals = Arrivals()
 flight_by_route = FlightByRoute()
+flight_info = FlightInfo()
 
 
 @app.route("/")
@@ -67,17 +69,20 @@ def handle_text_message(event):
     text = event.message.text
     result = None
     print("text: {}".format(text))
-    flight_route_pattern = re.compile('^([A-Z]{3})-([A-Z]{3})$')
+    flight_route_pattern = re.compile('^ROUTE ([A-Z]{3})-([A-Z]{3})$')
+    flight_no_pattern = re.compile('^FLIGHT ([A-Z0-9]{3,})$')
     if 'departure' in text.lower():
         result = departures.create_departures_data()
     if 'arrival' in text.lower():
         result = arrivals.create_arrivals_data()
-    if flight_route_pattern.match(text.upper()) is not None:
+    if flight_route_pattern.match(text.upper()):
         result = flight_route_pattern.match(text.upper())
         origin = result.group(1)
         destination = result.group(2)
         result = flight_by_route.get_flight_by_route(origin, destination)
-
+    if flight_no_pattern.match(text.upper()):
+        result = flight_no_pattern.match(text.upper())
+        result = flight_info.get_flight_info(result.group(1))
     if result is not None:
         if isinstance(result, BubbleContainer) or isinstance(result, CarouselContainer):
             message = FlexSendMessage(alt_text="Flex", contents=result)
