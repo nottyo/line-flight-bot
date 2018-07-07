@@ -90,6 +90,11 @@ def handle_text_message(event):
     print("text: {}".format(text))
     if isinstance(event.source, SourceUser):
         id = event.source.user_id
+        rich_menu_list = line_bot_api.get_rich_menu_list()
+        for rich_menu in rich_menu_list:
+            print("rich_menu: {}".format(rich_menu))
+            print("link rich_menu_to_user: {}".format(id))
+            line_bot_api.link_rich_menu_to_user(id, rich_menu['richMenuId'])
     users = get_user_by_name(id)
     print("users: {}".format(users))
     if get_user_by_name(id) is None:
