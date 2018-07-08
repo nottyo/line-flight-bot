@@ -217,6 +217,7 @@ def handle_text_message(event):
     airport_pattern = re.compile('^([A-Z]{3})$')
     airport_confirm_pattern = re.compile('^CONFIRM (:?YES|NO) AIRPORT (.*)$')
     search_pattern = re.compile('^FIND (.*)$')
+    manual_airport_pattern = re.compile('^AIRPORT ([A-Z]{3})$')
     if text.upper() == "@BOT AIRPORT":
         result = "Please enter the airport IATA/ICAO code i.e. BKK, NRT, CNX"
     if text.upper() == "@BOT SEARCH":
@@ -237,9 +238,12 @@ def handle_text_message(event):
     if search_pattern.match(text.upper()):
         search_keyword = search_pattern.match(text.upper()).group(1)
         result = search(search_keyword)
-    if '@BOT DEPARTURES' in text.lower():
+    if manual_airport_pattern.match(text.upper()):
+        airport_code = manual_airport_pattern.match(text.upper()).group(1)
+        result = departures.create_departures_data(airport_code)
+    if '@BOT DEPARTURES' in text.upper():
         result = departures.create_departures_data('BKK')
-    if '@BOT ARRIVALS' in text.lower():
+    if '@BOT ARRIVALS' in text.upper():
         result = arrivals.create_arrivals_data()
     if flight_route_pattern.match(text.upper()):
         result = flight_route_pattern.match(text.upper())
