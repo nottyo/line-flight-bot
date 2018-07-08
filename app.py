@@ -237,9 +237,9 @@ def handle_text_message(event):
     if search_pattern.match(text.upper()):
         search_keyword = search_pattern.match(text.upper()).group(1)
         result = search(search_keyword)
-    if 'departure' in text.lower():
+    if '@BOT DEPARTURES' in text.lower():
         result = departures.create_departures_data('BKK')
-    if 'arrival' in text.lower():
+    if '@BOT ARRIVALS' in text.lower():
         result = arrivals.create_arrivals_data()
     if flight_route_pattern.match(text.upper()):
         result = flight_route_pattern.match(text.upper())
