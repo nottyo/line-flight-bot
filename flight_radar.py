@@ -72,3 +72,22 @@ class FlightRadar:
         response = requests.get(url, params=payload, headers=request_base_headers)
         return response
 
+    def query(self, search_keyword):
+        url = 'https://www.flightradar24.com/v1/search/web/find'
+        payload = {
+            'query': search_keyword,
+            'limit': '10'
+        }
+        print('Search for keyword: {0}'.format(search_keyword))
+        response = requests.get(url, params=payload)
+        return response
+
+    def get_live_flight(self, flight_id):
+        url = 'https://data-live.flightradar24.com/clickhandler/'
+        payload = {
+            'version': '1.5',
+            'flight': flight_id
+        }
+        print('Get Live Flight: {0}'.format(flight_id))
+        response = requests.get(url, params=payload, headers=request_base_headers)
+        return response
