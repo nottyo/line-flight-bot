@@ -141,7 +141,8 @@ def search(search_keyword):
                 column.thumbnail_image_url = default_aircraft
             else:
                 column.thumbnail_image_url = aircraft_image[0]['images']['medium'][0]['src']
-            text = 'LIVE Flight Time: {0}\n{1}'.format(flight_time, result['detail']['route'])
+            text = 'LIVE Flight Time: {0}\nRoute: {1} -> {2}'.format(flight_time, result['detail']['schd_from'],
+                                                                       result['detail']['schd_to'])
             text = (text[:55] + '..') if len(text) > 55 else text
             column.text = text
             column.actions = [
