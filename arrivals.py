@@ -138,7 +138,12 @@ class Arrivals:
                                 "color": "#ffffff",
                                 "size": "xxs",
                                 "wrap": True,
-                                "flex": 5
+                                "flex": 5,
+                                "action": {
+                                    "type": "message",
+                                    "label": "FLIGHT {0}".format(flight_no),
+                                    "text": "FLIGHT {0}".format(flight_no)
+                                }
                             },
                             {
                                 "type": "text",
@@ -146,7 +151,12 @@ class Arrivals:
                                 "color": "#ffffff",
                                 "size": "xxs",
                                 "flex": 2,
-                                "align": "end"
+                                "align": "end",
+                                "action": {
+                                    "type": "message",
+                                    "label": "FLIGHT {0}".format(flight_no),
+                                    "text": "FLIGHT {0}".format(flight_no)
+                                }
                             }
                         ]
                     }

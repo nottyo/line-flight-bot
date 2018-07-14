@@ -113,9 +113,9 @@ class Departures:
             bubble_body_contents = bubble['body']['contents']
             for schedule in schedules:
                 flight_no = schedule['flight']['identification']['number']['default']
-                status_text = str(schedule['flight']['status']['generic']['status']['text']).capitalize()
-                status_color = schedule['flight']['status']['generic']['status']['color']
-                airline_name = schedule['flight']['airline']['short']
+                # status_text = str(schedule['flight']['status']['generic']['status']['text']).capitalize()
+                # status_color = schedule['flight']['status']['generic']['status']['color']
+                # airline_name = schedule['flight']['airline']['short']
                 destination_city = str(schedule['flight']['airport']['destination']['position']['region']['city']).upper()
                 destination_iata = str(schedule['flight']['airport']['destination']['code']['iata'])
                 departure_time = time.strftime('%H:%M', time.localtime(schedule['flight']['time']['scheduled']['departure']))
@@ -138,7 +138,12 @@ class Departures:
                                 "color": "#ffffff",
                                 "size": "xxs",
                                 "wrap": True,
-                                "flex": 5
+                                "flex": 5,
+                                "action": {
+                                    "type": "message",
+                                    "label": "FLIGHT {0}".format(flight_no),
+                                    "text": "FLIGHT {0}".format(flight_no)
+                                }
                             },
                             {
                                 "type": "text",
@@ -146,7 +151,12 @@ class Departures:
                                 "color": "#ffffff",
                                 "size": "xxs",
                                 "flex": 2,
-                                "align": "end"
+                                "align": "end",
+                                "action": {
+                                    "type": "message",
+                                    "label": "FLIGHT {0}".format(flight_no),
+                                    "text": "FLIGHT {0}".format(flight_no)
+                                }
                             }
                         ]
                     }
