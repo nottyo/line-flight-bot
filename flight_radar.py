@@ -2,7 +2,7 @@ import requests
 import time
 
 base_url = 'https://api.flightradar24.com'
-request_base_headers = {'User-agent': 'nottyo/1.0'}
+request_base_headers = {'User-agent': 'Flightradar24/78002 Dalvik/2.1.0 (Linux; U; Android 6.0.1; MI 4LTE MIUI/V9.5.5.0.MXDMIFA)'}
 
 
 class FlightRadar:
