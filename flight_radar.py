@@ -19,6 +19,7 @@ class FlightRadar:
         print('Getting Airport \"{0}\"'.format(airport_code))
         response = requests.get(url, params=payload, headers=request_base_headers)
         print('Getting Airport {0} Response: {1}'.format(airport_code, response.text))
+        print('Getting Airport {0} Response Header: {1}'.format(airport_code, response.headers))
         return response
 
     def get_airport_departures(self, airport_code, page):
@@ -34,6 +35,7 @@ class FlightRadar:
         print('Getting Airport \"{0}\" Departures Flight, Page: {1}'.format(airport_code, page))
         response = requests.get(url, params=payload, headers=request_base_headers)
         print('Getting Airport {0} Departures Response: {1}'.format(airport_code, response.text))
+        print('Getting Airport {0} Departures Response Headers: {1}'.format(airport_code, response.headers))
         return response
 
     def get_airport_arrivals(self, airport_code, page):
@@ -49,6 +51,7 @@ class FlightRadar:
         print('Getting Airport \"{0}\" Arrivals Flight, Page: {1}'.format(airport_code, page))
         response = requests.get(url, params=payload, headers=request_base_headers)
         print('Getting Airport {0} Arrivals Response: {1}'.format(airport_code, response.text))
+        print('Getting Airport {0} Arrivals Response Headers: {1}'.format(airport_code, response.headers))
         return response
 
     def get_flight_by_route(self, origin, destination):
