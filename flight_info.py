@@ -71,7 +71,7 @@ class FlightInfo:
                                 "contents": [
                                     {
                                         "type": "image",
-                                        "url": "https://www.iconsplace.com/download/white-airplane-mode-on-256.png",
+                                        "url": "https://image.ibb.co/ddeQ18/airplane_mode_on_icon_512.png",
                                         "size": "xs",
                                         "flex": 0
                                     },

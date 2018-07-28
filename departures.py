@@ -39,7 +39,7 @@ class Departures:
                     "contents": [
                         {
                             "type": "image",
-                            "url": "https://www.iconsplace.com/download/black-airplane-takeoff-256.png",
+                            "url": "https://image.ibb.co/bvZ018/airplane_takeoff_icon_256.png",
                             "size": "xs",
                             "align": "start",
                             "flex": 0

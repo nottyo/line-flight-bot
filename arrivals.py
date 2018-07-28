@@ -39,7 +39,7 @@ class Arrivals:
                     "contents": [
                         {
                             "type": "image",
-                            "url": "https://www.iconsplace.com/download/black-airplane-landing-256.png",
+                            "url": "https://image.ibb.co/hjrkZT/airplane_landing_icon_512.gif",
                             "size": "xs",
                             "align": "start",
                             "flex": 0

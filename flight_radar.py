@@ -2,7 +2,7 @@ import requests
 import time
 
 base_url = 'https://api.flightradar24.com'
-request_base_headers = {'User-agent': 'Flightradar24/78002 Dalvik/2.1.0 (Linux; U; Android 6.0.1; MI 4LTE MIUI/V9.5.5.0.MXDMIFA)'}
+request_base_headers = {'User-agent': 'FlightradarFree/2018071001 CFNetwork/901.1 Darwin/17.6.0'}
 
 
 class FlightRadar:
@@ -14,7 +14,8 @@ class FlightRadar:
             'plugin[]': '',
             'plugin-setting[schedule][mode]': '',
             '[timestamp]': str(int(time.time())),
-            'limit': "5"
+            'limit': '5',
+            'device': 'ios'
         }
         print('Getting Airport \"{0}\"'.format(airport_code))
         response = requests.get(url, params=payload, headers=request_base_headers)
@@ -30,7 +31,8 @@ class FlightRadar:
             'plugin-setting[schedule][mode]': 'departures',
             '[timestamp]': str(int(time.time())),
             'page': str(page),
-            'limit': "10"
+            'limit': '10',
+            'device': 'ios'
         }
         print('Getting Airport \"{0}\" Departures Flight, Page: {1}'.format(airport_code, page))
         response = requests.get(url, params=payload, headers=request_base_headers)
@@ -46,7 +48,8 @@ class FlightRadar:
             'plugin-setting[schedule][mode]': 'arrivals',
             '[timestamp]': str(int(time.time())),
             'page': str(page),
-            'limit': "10"
+            'limit': "10",
+            'device': 'ios'
         }
         print('Getting Airport \"{0}\" Arrivals Flight, Page: {1}'.format(airport_code, page))
         response = requests.get(url, params=payload, headers=request_base_headers)
@@ -60,7 +63,8 @@ class FlightRadar:
             'query': 'default',
             'origin': origin,
             'destination': destination,
-            'limit': '100'
+            'limit': '100',
+            'device': 'ios'
         }
         print('Getting Flights by Route, Origin: {0}, Destination: {1}'.format(origin, destination))
         response = requests.get(url, params=payload, headers=request_base_headers)
@@ -72,7 +76,8 @@ class FlightRadar:
             'query': flight,
             'fetchBy': 'flight',
             'page': '1',
-            'limit': '100'
+            'limit': '100',
+            'device': 'ios'
         }
         print('Getting Flight {0}'.format(flight))
         response = requests.get(url, params=payload, headers=request_base_headers)
@@ -82,7 +87,8 @@ class FlightRadar:
         url = 'https://www.flightradar24.com/v1/search/web/find'
         payload = {
             'query': search_keyword,
-            'limit': '10'
+            'limit': '10',
+            'device': 'ios'
         }
         print('Search for keyword: {0}'.format(search_keyword))
         response = requests.get(url, params=payload)
@@ -92,7 +98,9 @@ class FlightRadar:
         url = 'https://data-live.flightradar24.com/clickhandler/'
         payload = {
             'version': '1.5',
-            'flight': flight_id
+            'flight': flight_id,
+            'client': 'ios_freemium',
+            'version': '7.8.2'
         }
         print('Get Live Flight: {0}'.format(flight_id))
         response = requests.get(url, params=payload, headers=request_base_headers)

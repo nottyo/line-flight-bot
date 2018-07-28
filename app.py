@@ -15,7 +15,7 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, BubbleContainer, FlexSendMessage, TextSendMessage, CarouselContainer, SourceUser,
     ConfirmTemplate, TemplateSendMessage, CarouselTemplate, CarouselColumn, URIAction, MessageAction,
-    LocationSendMessage
+    LocationSendMessage, FollowEvent
 )
 
 from airport import Airport
@@ -200,15 +200,20 @@ def handle_live_flight(flight_id):
     return location_msg
 
 
-@handler.add(MessageEvent, message=TextMessage)
-def handle_text_message(event):
-    text = event.message.text
-    print("text: {}".format(text))
+@handler.add(FollowEvent)
+def handle_follow_event(event):
     if isinstance(event.source, SourceUser):
         id = event.source.user_id
         rich_menu_list = line_bot_api.get_rich_menu_list()
         for rich_menu in rich_menu_list:
-            line_bot_api.link_rich_menu_to_user(id, rich_menu.rich_menu_id)
+            if rich_menu.chat_bar_text == 'Flight Menu':
+                line_bot_api.link_rich_menu_to_user(id, rich_menu.rich_menu_id)
+
+
+@handler.add(MessageEvent, message=TextMessage)
+def handle_text_message(event):
+    text = event.message.text
+    print("text: {}".format(text))
 
     result = None
     flight_route_pattern = re.compile('^ROUTE ([A-Z]{3})-([A-Z]{3})$')
